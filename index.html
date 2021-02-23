@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Temperature Hot</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input id="inputLocation" type="text" class="form-control" placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button id="search-btn" type="button" class="btn btn-danger">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img id="icon" src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <h1 id="enter-city">Dhaka</h1>
+            <h3><span id="enter-temp"></span>&deg;C</h3>
+            <h5>Feels like <span id="feels-temp"></span>&deg;C</h5>
+            <h1 id="enter-status" class="lead">Clouds</h1>
+        </div>
+    </div>
+    <script>
+       
+        // fetch api function //
+        const getWeatherData = inputLocation =>{
+            fetch(`http://api.openweathermap.org/data/2.5/weather?q=${inputLocation}&units=metric&appid=934438edd5b84908df49f12cf8458950`)
+            .then(response => response.json())
+            .then(data => updateUI(data))
+            .catch(error => alert("Please input a valid city name!"))
+        }
+
+        //search button event handler//
+        const searchValue = document.getElementById("search-btn");
+        searchValue.addEventListener("click", function(){
+            let inputCity = document.getElementById("inputLocation").value;
+            getWeatherData(inputCity);
+        })
+
+        // update UI Data //
+            const temp = document.getElementById("enter-temp");
+            const feelTemp = document.getElementById("feels-temp");
+            const city = document.getElementById("enter-city");
+            const weatherStatus = document.getElementById("enter-status");
+        
+            const updateUI = data => {
+            temp.innerHTML = data.main.temp;
+            feelTemp.innerHTML = data.main.feels_like;
+            city.innerHTML = data.name;
+            weatherStatus.innerHTML = data.weather[0].main;
+            document.getElementById("icon").setAttribute("src",
+            `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`)
+            document.getElementById("inputLocation").value = "";
+        }
+
+        // By Default Location //
+        getWeatherData("Dhaka");
+    </script>
+</body>
+
+</html>
