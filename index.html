@@ -40,7 +40,7 @@
        
         // fetch api function //
         const getWeatherData = inputLocation =>{
-            fetch(`http://api.openweathermap.org/data/2.5/weather?q=${inputLocation}&units=metric&appid=934438edd5b84908df49f12cf8458950`)
+            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${inputLocation}&units=metric&appid=934438edd5b84908df49f12cf8458950`)
             .then(response => response.json())
             .then(data => updateUI(data))
         }
